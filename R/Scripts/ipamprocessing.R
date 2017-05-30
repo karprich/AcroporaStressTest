@@ -34,6 +34,8 @@ summ <- aggregate(all.f$Frag.ID, by = list(all.f$Genotype, all.f$Date), FUN = le
 xyplot(x~ Group.2|Group.1, data = summ, type ="o", ylim = c(0, 17))
 xyplot(Y ~ Tank | Genotype, data=all.f, type=c("p", "r"), ylim=c(0.4, 0.7))
 
+# NEW LINE OF CODE!!!!!!!!!
+
 #find a value
 all[which(all$Genotype=="17BL"),]
 all[which(all$Y > 1.0),]
