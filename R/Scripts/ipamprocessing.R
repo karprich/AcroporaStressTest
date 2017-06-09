@@ -5,6 +5,10 @@ genotypes2 <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/Acr
 genotypes3 <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/29052017_3rdIpam/Processed/3rdgenotypes.csv")
 genotypes4 <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/01062017_4thIpam/Processed/4rgenotypes.csv")
 genotypes5 <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/05062017_5thIpam/Processed/rGenotypes.csv")
+genotypes5wbox <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/05062017_5thIpam/Processed/rGenotypeswboxtype.csv")
+genotypes6 <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/08062017_6thIpam/Processed/rgenotypes.csv")
+genotypes6wbox <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/08062017_6thIpam/Processed/rgenotypeswbox.csv")
+
 #Import iPAM data
 devtools::source_url("https://raw.githubusercontent.com/jrcunning/IPAM2R/master/R/import_ipam.R")
 ipam1_values <- import_ipam("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/22052017_initialIpam/Raw Data/iPAMinitials", 
@@ -17,6 +21,8 @@ ipam4_values <- import_ipam("/Users/Rich/Documents/GradSchool/Internship/Lab/Dat
                             info.pattern = NULL)
 ipam5_values <- import_ipam("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/05062017_5thIpam/RawData", 
                             info.pattern = NULL)
+ipam6_values <- import_ipam("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/08062017_6thIpam/RawData", 
+                            info.pattern = NULL)
 combine_ipam1 <- merge(genotypes1, ipam1_values, by = c("file", "AOI"))
 combine_ipam1$Date <- as.Date("2017-05-22")
 combine_ipam1$Tank <- NA
@@ -28,22 +34,29 @@ combine_ipam4 <- merge(genotypes4, ipam4_values, by = c("file", "AOI"))
 combine_ipam4$Date <- as.Date("2017-06-01")
 combine_ipam5 <- merge(genotypes5, ipam5_values, by = c("file", "AOI"))
 combine_ipam5$Date <- as.Date("2017-06-05")
+combine_ipam5wbox <- merge(genotypes5wbox, ipam5_values, by = c("file", "AOI"))
+combine_ipam5wbox$Date <- as.Date("2017-06-05")
+combine_ipam6 <- merge(genotypes6, ipam6_values, by = c("file", "AOI"))
+combine_ipam6$Date <- as.Date("2017-06-08")
+combine_ipam6wbox <- merge(genotypes6wbox, ipam6_values, by = c("file", "AOI"))
+combine_ipam6wbox$Date <- as.Date("2017-06-08")
 
 # combine time points
 # reorder columns in ipam1
 combine_ipam1 <- combine_ipam1[,c(1:5,10,6:9)]
 # attach all rows together
-all <- rbind(combine_ipam1, combine_ipam2, combine_ipam3, combine_ipam4, combine_ipam5)
+all <- rbind(combine_ipam1, combine_ipam2, combine_ipam3, combine_ipam4, combine_ipam5, combine_ipam6)
 # remove rows with "BL" or "BACK" in them
 all.f <- subset(all, !all$Genotype %in% c("17BL", "BACK", "Blan"))
 
 library(lattice)
 xyplot(Y ~ Date | Genotype, data=all.f, type=c("p", "r"), ylim=c(0.3, 0.7))
-boxplot(combine_ipam3$Y, combine_ipam4$Y, combine_ipam5$Y, names = c("3rd IPam", "4th IPam", "5th IPam"), ylab = "Y", ylim = c(0.3, 0.7))
+boxplot(combine_ipam3$Y, combine_ipam4$Y, combine_ipam5$Y, combine_ipam6$Y, names = c("3rd IPam", "4th IPam", "5th IPam", "6th IPam"), ylab = "Y", ylim = c(0.3, 0.7))
 summ <- aggregate(all.f$Frag.ID, by = list(all.f$Genotype, all.f$Date), FUN = length)
 xyplot(x~ Group.2|Group.1, data = summ, type ="o", ylim = c(0, 17))
 xyplot(Y ~ factor(Tank) | factor(Genotype), data=combine_ipam5, type=c("p"), ylim = c(0.4, 0.7))
-xyplot(Y ~ factor(Tank) | factor(Genotype), data=combine_ipam4, type=c("p"), ylim = c(0.4, 0.7))
+xyplot(Y ~ factor(Tank) | factor(Genotype), data=combine_ipam6, type=c("p"), ylim = c(0.3, 0.7))
+xyplot(Y ~ factor(Box) | factor(Genotype), data=combine_ipam6wbox, type=c("p"), ylim = c(0.3, 0.7))
 View(table(combine_ipam3$Tank))
 ? xyplot 
 
@@ -55,10 +68,12 @@ dev.off()
 
 #Number of Genotypes with x number of genotypes
 length(which(geno2_count$x >= 8))
+View(which(combine_ipam5$Genotype < 8))
 
 
 #Number of geno types per tank
-View(table(combine_ipam3$Genotype, combine_ipam3$Tank))
+View(table(combine_ipam5$Genotype, combine_ipam5$Tank))
+View(table(combine_ipam5$Genotype))
 ipam3_tanks <- dcast(combine_ipam3, combine_ipam3$Genotype ~ combine_ipam3$Tank)
 View(ipam3_tanks)
 #Write figures
@@ -73,9 +88,11 @@ all[which(all$Y > 1.0),]
 
 
 #basic analysis
-head(combine_ipam3)
-boxplot(combine_ipam3$Y ~ combine_ipam3$Genotype, ylim=c(0.3,0.7))
-mod <- lm(combine_ipam5$Y ~ combine_ipam5$Genotype)
+
+boxplot(combine_ipam6wbox$Y ~ combine_ipam6wbox$Box, ylim=c(0.3,0.7))
+mod <- lm(combine_ipam6wbox$Y ~ combine_ipam6wbox$Box)
+boxplot(combine_ipam6$Y ~ combine_ipam6$Tank, ylim=c(0.3,0.7))
+mod <- lm(combine_ipam6wbox$Y ~ combine_ipam6wbox$Tank)
 anova(mod)
 TukeyHSD(aov(mod))
 table(combine_ipam2$Genotype)

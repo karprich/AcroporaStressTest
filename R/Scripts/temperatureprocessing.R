@@ -1,6 +1,6 @@
 #Temperature Analysis
 # ? strptime
-temp <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/TemperatureData/Rdata0606.csv", header = T)
+temp <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/TemperatureData/Rdata.csv", header = T)
 temp$Date <- as.POSIXct(temp$Date, format = "%H:%M %m/%d/%Y")
 
 lines(temp$Tmpx17.bottom.Right ~ temp$Date)
@@ -12,15 +12,15 @@ temp[temp$Date>as.POSIXct("2017-06-04 02:00:00") & temp$Date<as.POSIXct("2017-06
 library(zoo)
 par(mfrow = c(2, 2))
 smooth_tl <- rollapply(data = temp$Tmpx19..6b.top.left, width = 180, FUN = mean, na.rm = T, fill = NA)
-plot(temp$Projected ~ temp$Date, type = "l", ylim=c(25, 35), lwd = 2, main = "TL")
+plot(temp$Projected ~ temp$Date, type = "l", ylim=c(25, 35), lwd = 2, main = "TL", xlab = "Date", ylab = "Temperature (oC)")
 lines(temp$Tmpx19..6b.top.left ~ temp$Date, lwd = (.5))
 lines(smooth_tl ~ temp$Date, col = 'red')
 smooth_tr <- rollapply(data = temp$Tmpx21...7b.top.right, width = 180, FUN = mean, na.rm = T, fill = NA)
-plot(temp$Projected ~ temp$Date, type = "l", ylim=c(25, 35), lwd = 2, main = "TR")
+plot(temp$Projected ~ temp$Date, type = "l", ylim=c(25, 35), lwd = 2, main = "TR", xlab = "Date", ylab = "Temperature (oC)")
 lines(temp$Tmpx21...7b.top.right ~ temp$Date, lwd = (.5))
 lines(smooth_tr ~ temp$Date, col = 'red')
-smooth_bl <- rollapply(data = temp$Tmpx23.6A.Bottom.Left, width = 180, FUN = mean, na.rm = T, fill = NA)
-plot(temp$Projected ~ temp$Date, type = "l", ylim=c(25, 35), lwd = 2, main = "BL")
+smooth_bl <- rollapply(data = temp$Tmpx23.6A.Bottom.Left, width = 180, FUN = mean, na.rm = T, fill = NA, xlab = "Date", ylab = "Temperature (oC)")
+plot(temp$Projected ~ temp$Date, type = "l", ylim=c(25, 35), lwd = 2, main = "BL", xlab = "Date", ylab = "Temperature (oC)")
 lines(temp$Tmpx23.6A.Bottom.Left ~ temp$Date, lwd = (.5))
 lines(smooth_bl ~ temp$Date, col = 'red')
 

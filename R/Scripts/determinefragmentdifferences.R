@@ -1,49 +1,49 @@
 #Write Genotype Table for geno 3
-genotypes3$Letter <- substr(genotypes3$Genotype.ID, start = 5, 5)
-geno3_letters <-aggregate(genotypes3$Letter, by = list(genotypes3$Genotype), FUN = c)
-geno3_count <- aggregate(genotypes3$Letter, by = list(genotypes3$Genotype), FUN = length)
-View(merge(geno3_count, geno3_letters, by = "Group.1"))
-geno3table<-merge(geno3_count, geno3_letters, by = "Group.1")
+genotypes4$Letter <- substr(genotypes4$FragID, start = 5, 5)
+geno4_letters <-aggregate(genotypes4$Letter, by = list(genotypes4$Genotype), FUN = paste)
+geno4_count <- aggregate(genotypes4$Letter, by = list(genotypes4$Genotype), FUN = length)
+View(merge(geno4_count, geno4_letters, by = "Group.1"))
+geno4table<-merge(geno4_count, geno4_letters, by = "Group.1")
 
 #Write Genotype Table for geno 2
 genotypes2 <- subset(genotypes2, !genotypes2$Genotype %in% c("17BL", "BACK", "Blan"))
-genotypes2$Letter <- substr(genotypes2$Genotype.ID, start = 5, 5)
-geno2_letters <- aggregate(as.character(genotypes2$Letter), by = list(genotypes2$Genotype), FUN = paste)
-geno2_count <- aggregate(genotypes2$Letter, by = list(genotypes2$Genotype), FUN = length)
-geno2table<-merge(geno2_count, geno2_letters, by = "Group.1")
+genotypes5$Letter <- substr(genotypes5$FragID, start = 5, 5)
+geno5_letters <- aggregate(as.character(genotypes5$Letter), by = list(genotypes5$Genotype), FUN = paste)
+geno5_count <- aggregate(genotypes5$Letter, by = list(genotypes5$Genotype), FUN = length)
+geno5table<-merge(geno5_count, geno5_letters, by = "Group.1")
 
 #Change Column Names for genotype table
 library(reshape2)
 head(geno2table)
-colnames(geno2table) <- gsub("Group.1", "Genotype", colnames(geno2table))
-colnames(geno2table) <- gsub("Frag Count", "FragCount", colnames(geno2table))
-colnames(geno2table) <- gsub("Frag ID", "FragID", colnames(geno2table))
-geno2table$value <- as.integer(2) #differentiates timpe points
+colnames(geno4table) <- gsub("Group.1", "Genotype", colnames(geno4table))
+colnames(geno4table) <- gsub("Frag Count", "FragCount", colnames(geno4table))
+colnames(geno4table) <- gsub("Frag ID", "FragID", colnames(geno4table))
+geno4table$value <- as.integer(4) #differentiates timpe points
 
-colnames(geno3table) <- gsub("Group.1", "Genotype", colnames(geno3table))
-colnames(geno3table) <- gsub("Frag Count", "FragCount", colnames(geno3table))
-colnames(geno3table) <- gsub("Frag ID", "FragID", colnames(geno3table))
-geno3table$value <- as.integer(3)
+colnames(geno5table) <- gsub("Group.1", "Genotype", colnames(geno5table))
+colnames(geno5table) <- gsub("Frag Count", "FragCount", colnames(geno5table))
+colnames(geno5table) <- gsub("Frag ID", "FragID", colnames(geno5table))
+geno5table$value <- as.integer(5)
 
 #determine which fragments differ
-geno2table <- geno2table[order(geno2table$Genotype), ]
-geno3table <- geno3table[order(geno3table$Genotype), ]
+geno5table <- geno5table[order(geno5table$Genotype), ]
+geno4table <- geno4table[order(geno4table$Genotype), ]
 symdiff <- function(x, y) setdiff(union(x, y), intersect(x, y))
 
-result <- data.frame(matrix(NA, nrow=nrow(geno2table), ncol=2))
+result <- data.frame(matrix(NA, nrow=nrow(geno4table), ncol=2))
 for (i in 1:nrow(geno2table)) {
-  frags2 <- geno2table[i, "FragID"][[1]]
-  frags3 <- geno3table[i, "FragID"][[1]]
-  if (setequal(frags2, frags3)) {
+  frags4 <- geno4table[i, "FragID"][[1]]
+  frags5 <- geno5table[i, "FragID"][[1]]
+  if (setequal(frags5, frags4)) {
     result[i, 1] <- TRUE
     result[i, 2] <- NA
   } else {
     result[i, 1] <- FALSE
-    result[i, 2] <- paste0(symdiff(frags2, frags3), collapse=" ")
+    result[i, 2] <- paste0(symdiff(frags4, frags5), collapse=" ")
   }
 }
 
-View(cbind(geno2table$Genotype, result))
+View(cbind(geno4table$Genotype, result))
 
 
 
