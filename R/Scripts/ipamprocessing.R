@@ -41,21 +41,39 @@ combine_ipam6$Date <- as.Date("2017-06-08")
 combine_ipam6wbox <- merge(genotypes6wbox, ipam6_values, by = c("file", "AOI"))
 combine_ipam6wbox$Date <- as.Date("2017-06-08")
 
+#correction factor
+cor_combine_ipam5 <- combine_ipam5
+cor_combine_ipam4 <- combine_ipam4
+cor_combine_ipam4$F <- 0.999 * combine_ipam4$F
+cor_combine_ipam4$Fm <- 1.03 * combine_ipam4$Fm
+cor_combine_ipam4$Y <- (cor_combine_ipam4$Fm-cor_combine_ipam4$F)/cor_combine_ipam4$Fm
+
+cor_combine_ipam5$F <- 0.999 * combine_ipam5$F
+cor_combine_ipam5$Fm <- 1.03 * combine_ipam5$Fm
+cor_combine_ipam5$Y <- (cor_combine_ipam5$Fm-cor_combine_ipam5$F)/cor_combine_ipam5$Fm
+par(mfrow= c(1, 2))
+boxplot(combine_ipam1$Y, combine_ipam2$Y, combine_ipam3$Y, cor_combine_ipam4$Y, cor_combine_ipam5$Y, combine_ipam6$Y, names = c("1st IPam", "2nd IPam", "3rd IPam", "4th IPam", "5th IPam", "6th IPam"), ylab = "Y", ylim = c(0.3, 0.7))
+boxplot(combine_ipam1$Y, combine_ipam2$Y, combine_ipam3$Y, combine_ipam4$Y, combine_ipam5$Y, combine_ipam6$Y, names = c("1st IPam", "2nd IPam", "3rd IPam", "4th IPam", "5th IPam", "6th IPam"), ylab = "Y", ylim = c(0.3, 0.7))
+
 # combine time points
 # reorder columns in ipam1
 combine_ipam1 <- combine_ipam1[,c(1:5,10,6:9)]
 # attach all rows together
-all <- rbind(combine_ipam1, combine_ipam2, combine_ipam3, combine_ipam4, combine_ipam5, combine_ipam6)
+all <- rbind(combine_ipam1, combine_ipam2, combine_ipam3, cor_combine_ipam4, cor_combine_ipam5, combine_ipam6)
 # remove rows with "BL" or "BACK" in them
 all.f <- subset(all, !all$Genotype %in% c("17BL", "BACK", "Blan"))
 
+
+#correct all
+
+
 library(lattice)
 xyplot(Y ~ Date | Genotype, data=all.f, type=c("p", "r"), ylim=c(0.3, 0.7))
-boxplot(combine_ipam3$Y, combine_ipam4$Y, combine_ipam5$Y, combine_ipam6$Y, names = c("3rd IPam", "4th IPam", "5th IPam", "6th IPam"), ylab = "Y", ylim = c(0.3, 0.7))
-summ <- aggregate(all.f$Frag.ID, by = list(all.f$Genotype, all.f$Date), FUN = length)
+boxplot(combine_ipam1$Y, combine_ipam2$Y, combine_ipam3$Y, cor_combine_ipam4$Y, cor_combine_ipam5$Y, combine_ipam6$Y, names = c("1st IPam", "2nd IPam", "3rd IPam", "4th IPam", "5th IPam", "6th IPam"), ylab = "Y", ylim = c(0.3, 0.7))
+summ <- aggregate(all.f$FragID, by = list(all.f$Genotype, all.f$Date), FUN = length)
 xyplot(x~ Group.2|Group.1, data = summ, type ="o", ylim = c(0, 17))
 xyplot(Y ~ factor(Tank) | factor(Genotype), data=combine_ipam5, type=c("p"), ylim = c(0.4, 0.7))
-xyplot(Y ~ factor(Tank) | factor(Genotype), data=combine_ipam6, type=c("p"), ylim = c(0.3, 0.7))
+xyplot(Y ~ factor(Tank) | factor(Genotype), data=combine_ipam6, type=c("p"), ylim = c(0.3, 0.7), xlab ="Tank")
 xyplot(Y ~ factor(Box) | factor(Genotype), data=combine_ipam6wbox, type=c("p"), ylim = c(0.3, 0.7))
 View(table(combine_ipam3$Tank))
 ? xyplot 
@@ -69,13 +87,15 @@ dev.off()
 #Number of Genotypes with x number of genotypes
 length(which(geno2_count$x >= 8))
 View(which(combine_ipam5$Genotype < 8))
-
+View(table(combine_ipam6$Genotype))
 
 #Number of geno types per tank
 View(table(combine_ipam5$Genotype, combine_ipam5$Tank))
 View(table(combine_ipam5$Genotype))
+library(reshape2)
 ipam3_tanks <- dcast(combine_ipam3, combine_ipam3$Genotype ~ combine_ipam3$Tank)
-View(ipam3_tanks)
+ipam6_tanks <- dcast(combine_ipam6, combine_ipam6$Genotype ~ combine_ipam6$Tank)
+View(ipam6_tanks)
 #Write figures
 png(filename = "Output/Figures/first3ipams.png", width=5, height = 5, units = "in", res = 300)
 xyplot(Y ~ Date | Genotype, data=all.f, type=c("p", "r"), ylim=c(0.4, 0.7))
@@ -85,7 +105,7 @@ dev.off()
 #find a value
 all[which(all$Genotype=="17BL"),]
 all[which(all$Y > 1.0),]
-
+View(all.f[which(all.f$Y < 0.5),])
 
 #basic analysis
 
@@ -93,6 +113,7 @@ boxplot(combine_ipam6wbox$Y ~ combine_ipam6wbox$Box, ylim=c(0.3,0.7))
 mod <- lm(combine_ipam6wbox$Y ~ combine_ipam6wbox$Box)
 boxplot(combine_ipam6$Y ~ combine_ipam6$Tank, ylim=c(0.3,0.7))
 mod <- lm(combine_ipam6wbox$Y ~ combine_ipam6wbox$Tank)
+mod <- lm(all.f$Y ~ factor(all.f$Date) * factor(all.f$Genotype))
 anova(mod)
 TukeyHSD(aov(mod))
 table(combine_ipam2$Genotype)

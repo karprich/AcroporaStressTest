@@ -12,6 +12,18 @@ geno5_letters <- aggregate(as.character(genotypes5$Letter), by = list(genotypes5
 geno5_count <- aggregate(genotypes5$Letter, by = list(genotypes5$Genotype), FUN = length)
 geno5table<-merge(geno5_count, geno5_letters, by = "Group.1")
 
+
+genotypes6$Letter <- substr(genotypes6$FragID, start = 5, 5)
+geno6_letters <- aggregate(as.character(genotypes6$Letter), by = list(genotypes6$Genotype), FUN = paste)
+geno6_count <- aggregate(genotypes6$Letter, by = list(genotypes6$Genotype), FUN = length)
+geno5table<-merge(geno5_count, geno5_letters, by = "Group.1")
+
+#Number of Genotypes with x number of genotypes
+length(which(geno6_count$x >= 8))
+
+View(table(combine_ipam6$Genotype))
+
+
 #Change Column Names for genotype table
 library(reshape2)
 head(geno2table)
