@@ -1,11 +1,11 @@
 #Temperature Analysis
 # ? strptime
-temp <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/TemperatureData/Rdata1.csv", header = T)
+temp <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/TemperatureData/Rdata.csv", header = T)
 temp$Date <- as.POSIXct(temp$Date, format = "%H:%M %m/%d/%Y")
 
 
 #omit sensor
-temp[temp$Date>as.POSIXct("2017-06-04 02:00:00") & temp$Date<as.POSIXct("2017-06-05 16:00:00"), "Tmpx17.bottom.Right"]<-NA
+temp[temp$Date>as.POSIXct("2017-06-03 11:40:00") & temp$Date<as.POSIXct("2017-06-05 16:00:00"), "Tmpx17.bottom.Right"]<-NA
 
 
 # for multipanel plot 
