@@ -1,36 +1,36 @@
 #Import Genotype CSV
 options(stringsAsFactors = FALSE)
-genotypes1 <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/22052017_initialIpam/Processed/R_genotypes.csv")
-genotypes2 <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/25052017_2ndIpam/Processed/rGenotypes.csv")
-genotypes3 <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/29052017_3rdIpam/Processed/3rdgenotypes.csv")
-genotypes4 <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/01062017_4thIpam/Processed/4rgenotypes.csv")
-genotypes5 <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/05062017_5thIpam/Processed/rGenotypes.csv")
-genotypes5wbox <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/05062017_5thIpam/Processed/rGenotypeswboxtype.csv")
-genotypes6 <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/08062017_6thIpam/Processed/rgenotypes.csv")
-genotypes6wbox <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/08062017_6thIpam/Processed/rgenotypeswbox.csv")
-genotypes7 <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/120517_7thIpam/Processed/rgenotypes.csv")
-genotypes8 <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/15062017_8thIpam/Processed/rgenotypes.csv")
-genotypes9 <- read.csv("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/19062017_9thIpam/Processed/rgenotypes.csv")
+genotypes1 <- read.csv("Data/22052017_initialIpam/Processed/R_genotypes.csv")
+genotypes2 <- read.csv("Data/25052017_2ndIpam/Processed/rGenotypes.csv")
+genotypes3 <- read.csv("Data/29052017_3rdIpam/Processed/3rdgenotypes.csv")
+genotypes4 <- read.csv("Data/01062017_4thIpam/Processed/4rgenotypes.csv")
+genotypes5 <- read.csv("Data/05062017_5thIpam/Processed/rGenotypes.csv")
+genotypes5wbox <- read.csv("Data/05062017_5thIpam/Processed/rGenotypeswboxtype.csv")
+genotypes6 <- read.csv("Data/08062017_6thIpam/Processed/rgenotypes.csv")
+genotypes6wbox <- read.csv("Data/08062017_6thIpam/Processed/rgenotypeswbox.csv")
+genotypes7 <- read.csv("Data/120517_7thIpam/Processed/rgenotypes.csv")
+genotypes8 <- read.csv("Data/15062017_8thIpam/Processed/rgenotypes.csv")
+genotypes9 <- read.csv("Data/19062017_9thIpam/Processed/rgenotypes.csv")
 
 #Import iPAM data
 devtools::source_url("https://raw.githubusercontent.com/jrcunning/IPAM2R/master/R/import_ipam.R")
-ipam1_values <- import_ipam("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/22052017_initialIpam/Raw Data/iPAMinitials", 
+ipam1_values <- import_ipam("Data/22052017_initialIpam/Raw Data/iPAMinitials", 
                             info.pattern = NULL)
-ipam2_values <- import_ipam("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/25052017_2ndIpam/RawData/25052017_2ndIpam", 
+ipam2_values <- import_ipam("Data/25052017_2ndIpam/RawData/25052017_2ndIpam", 
                             info.pattern = NULL)
-ipam3_values <- import_ipam("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/29052017_3rdIpam/Raw Data", 
+ipam3_values <- import_ipam("Data/29052017_3rdIpam/Raw Data", 
                             info.pattern = NULL)
-ipam4_values <- import_ipam("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/01062017_4thIpam/RawData", 
+ipam4_values <- import_ipam("Data/01062017_4thIpam/RawData", 
                             info.pattern = NULL)
-ipam5_values <- import_ipam("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/05062017_5thIpam/RawData", 
+ipam5_values <- import_ipam("Data/05062017_5thIpam/RawData", 
                             info.pattern = NULL)
-ipam6_values <- import_ipam("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/08062017_6thIpam/RawData", 
+ipam6_values <- import_ipam("Data/08062017_6thIpam/RawData", 
                             info.pattern = NULL)
-ipam7_values <- import_ipam("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/120517_7thIpam/RawData", 
+ipam7_values <- import_ipam("Data/120517_7thIpam/RawData", 
                             info.pattern = NULL)
-ipam8_values <- import_ipam("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/15062017_8thIpam/RawData", 
+ipam8_values <- import_ipam("Data/15062017_8thIpam/RawData", 
                             info.pattern = NULL)
-ipam9_values <- import_ipam("/Users/Rich/Documents/GradSchool/Internship/Lab/Data/AcroporaStressTest/Data/19062017_9thIpam/RawData",  info.pattern = NULL)                 
+ipam9_values <- import_ipam("Data/19062017_9thIpam/RawData",  info.pattern = NULL)                 
 
 combine_ipam1 <- merge(genotypes1, ipam1_values, by = c("file", "AOI"))
 combine_ipam1$Date <- as.Date("2017-05-22")
@@ -77,6 +77,9 @@ combine_ipam1 <- combine_ipam1[,c(1:5,10,6:9)]
 all <- rbind(combine_ipam1, combine_ipam2, combine_ipam3, cor_combine_ipam4, cor_combine_ipam5, combine_ipam6, combine_ipam7, combine_ipam8, combine_ipam9)
 # remove rows with "BL" or "BACK" in them
 all.f <- subset(all, !all$Genotype %in% c("17BL", "BACK", "Blan"))
+
+# Save data as .RData
+save(all.f, file="Output/all.f.RData")
 
 
 #correct all
