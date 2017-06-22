@@ -22,7 +22,10 @@ all.f <- droplevels(all.f)
 all.f$Days <- with(all.f, as.numeric(Date - first(Date[order(Date)])))
 
 # Fit generalized additive model
+all.f$Genotype <- factor(all.f$Genotype)
+
 mod <- gamm4(Y ~ Genotype + s(Days, k=4, by=Genotype), random=~(1|FragID), data=all.f)
+
 summary(mod$mer)
 
 # Get fitted values
@@ -41,6 +44,7 @@ newdata$lci <- apply(sim, 1, quantile, 0.08)
 newdata$uci <- apply(sim, 1, quantile, 0.92)
 
 # Plot results
+library(lattice)
 xyplot(fit ~ Days, groups= Genotype, data=newdata, type="l")
 xyplot(fit ~ Days | Genotype, data=newdata, type="l")
 
@@ -54,7 +58,7 @@ plotfits <- function(data, geno) {
   getColor <- colorRampPalette(brewer.pal(length(geno), "Dark2"))
   colors <- getColor(length(geno))
   dfsplit <- split(df, f=df$Genotype)
-  plot(NA, xlim=range(df$Days), ylim=range(df$fit, na.rm=T), xaxs="i")
+  plot(NA, xlim=range(df$Days), ylim=c(.2, .7), xaxs="i")
   for (i in 1:length(dfsplit)) {
     with(dfsplit[[i]], {
       lines(Days, fit)
@@ -67,8 +71,13 @@ plotfits <- function(data, geno) {
 }
 
 # Plot...
+par(mfrow = c(1,1))
 plotfits(newdata, "1721")
-plotfits(newdata, c("1721", "1722"))
-plotfits(newdata, c("1735", "1758", "1755", "1736", "1738",
-                    "1731", "1733", "1721"))
+plotfits(newdata, c("1721", "1755", "1738", "1731", "1750"))
+plotfits(newdata, c("1735", "1758", "1755", "1736", "1738", "1731", "1733", "1721"))
+abline(v=17, col = "red")
 plotfits(newdata, levels(all.f$Genotype))
+# Panel xyplot()
+xyplot(fit ~ Days | Genotype, data = newdata, type = "l")
+
+? xyplot
