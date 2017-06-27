@@ -26,7 +26,7 @@ all.f$Genotype <- factor(all.f$Genotype)
 
 mod <- gamm4(Y ~ Genotype + s(Days, k=4, by=Genotype), random=~(1|FragID), data=all.f)
 
-summary(mod$mer)
+#summary(mod$mer)
 
 # Get fitted values
 newdata <- expand.grid(Days=seq_len(max(all.f$Days)),
@@ -58,7 +58,7 @@ plotfits <- function(data, geno) {
   getColor <- colorRampPalette(brewer.pal(length(geno), "Dark2"))
   colors <- getColor(length(geno))
   dfsplit <- split(df, f=df$Genotype)
-  plot(NA, xlim=range(df$Days), ylim=c(.2, .7), xaxs="i")
+  plot(NA, xlim=range(df$Days), ylim=range(df$fit), xaxs="i", xlab = "Days", ylab = "Y")
   for (i in 1:length(dfsplit)) {
     with(dfsplit[[i]], {
       lines(Days, fit)
@@ -73,11 +73,22 @@ plotfits <- function(data, geno) {
 # Plot...
 par(mfrow = c(1,1))
 plotfits(newdata, "1721")
+
+abline(v=17, col = "red")
+plotfits(newdata, "1722")
+abline(v=17, col = "red")
+
+
+
 plotfits(newdata, c("1721", "1755", "1738", "1731", "1750"))
 plotfits(newdata, c("1735", "1758", "1755", "1736", "1738", "1731", "1733", "1721"))
 abline(v=17, col = "red")
 plotfits(newdata, levels(all.f$Genotype))
 # Panel xyplot()
+png(filename = "Output/Figures/first12ipamscurve.png", width=7, height = 7, units = "in", res = 300)
 xyplot(fit ~ Days | Genotype, data = newdata, type = "l")
+dev.off()
 
 ? xyplot
+# Plot Genotypes seperately with confident intervals and points
+
