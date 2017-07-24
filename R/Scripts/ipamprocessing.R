@@ -8,7 +8,7 @@ genotypes5 <- read.csv("Data/05062017_5thIpam/Processed/rGenotypes.csv")
 genotypes5wbox <- read.csv("Data/05062017_5thIpam/Processed/rGenotypeswboxtype.csv")
 genotypes6 <- read.csv("Data/08062017_6thIpam/Processed/rgenotypes.csv")
 genotypes6wbox <- read.csv("Data/08062017_6thIpam/Processed/rgenotypeswbox.csv")
-genotypes7 <- read.csv("Data/120517_7thIpam/Processed/rgenotypes.csv")
+genotypes7 <- read.csv("Data/12062017_7thIpam/Processed/rgenotypes.csv")
 genotypes8 <- read.csv("Data/15062017_8thIpam/Processed/rgenotypes.csv")
 genotypes9 <- read.csv("Data/19062017_9thIpam/Processed/rgenotypes.csv")
 genotypes10 <- read.csv("Data/21062017_10thIpam/Processed/rgenotypes.csv")
@@ -31,7 +31,7 @@ ipam5_values <- import_ipam("Data/05062017_5thIpam/RawData",
                             info.pattern = NULL)
 ipam6_values <- import_ipam("Data/08062017_6thIpam/RawData", 
                             info.pattern = NULL)
-ipam7_values <- import_ipam("Data/120517_7thIpam/RawData", 
+ipam7_values <- import_ipam("Data/12062017_7thIpam/RawData", 
                             info.pattern = NULL)
 ipam8_values <- import_ipam("Data/15062017_8thIpam/RawData", 
                             info.pattern = NULL)
@@ -44,8 +44,8 @@ ipam14_values <- import_ipam("Data/30062017_14thIpam/RawData", info.pattern = NU
 
 
 # Check Photos and Files for Same AOI
-View(table(ipam14_values$file))
-View(table(genotypes14$Picture))
+#View(table(ipam14_values$file))
+#View(table(genotypes14$Picture))
 
 
 
@@ -109,7 +109,7 @@ all.f[which(all.f$Date=="2017-06-26" & all.f$Genotype=="1732"),"Y"]<- NA
 all.f[which(all.f$Date=="2017-06-26" & all.f$Genotype=="1734"),"Y"] <- NA
 #omit Data that were positively selected for:
 #1721 Ipam 13+14
-all.f[which(all.f$Date=="2017-06-28" || all.f$Date=="2017-06-30" & all.f$Genotype=="1721"),"Y"]<- NA
+all.f[which(all.f$Date=="2017-06-28" & all.f$Genotype=="1721"| all.f$Date=="2017-06-30" & all.f$Genotype=="1721"),"Y"]<- NA
 #1722 Ipam 14
 all.f[which(all.f$Date=="2017-06-30" & all.f$Genotype=="1722"),"Y"]<- NA
 #1727 Ipam 14
@@ -117,19 +117,19 @@ all.f[which(all.f$Date=="2017-06-30" & all.f$Genotype=="1727"),"Y"]<- NA
 #1728 Ipam 14
 all.f[which(all.f$Date=="2017-06-30" & all.f$Genotype=="1728"),"Y"]<- NA
 #1731 Ipam 13+14
-all.f[which(all.f$Date=="2017-06-28" || all.f$Date=="2017-06-30" & all.f$Genotype=="1731"),"Y"]<- NA
+all.f[which(all.f$Date=="2017-06-28" & all.f$Genotype=="1731" | all.f$Date=="2017-06-30" & all.f$Genotype=="1731"),"Y"]<- NA
 #1732 Ipam 12, 13+14 Previously deleted Ipam 12
-all.f[which(all.f$Date=="2017-06-26" || all.f$Date=="2017-06-28" || all.f$Date=="2017-06-30" & all.f$Genotype=="1732"),"Y"]<- NA
+all.f[which(all.f$Date=="2017-06-26" & all.f$Genotype=="1732" | all.f$Date=="2017-06-28" & all.f$Genotype=="1732" | all.f$Date=="2017-06-30" & all.f$Genotype=="1732"),"Y"]<- NA
 #1734 Ipam 12, 13+14 Previously deleted Ipam 12
-all.f[which(all.f$Date=="2017-06-26" || all.f$Date=="2017-06-28" || all.f$Date=="2017-06-30" & all.f$Genotype=="1734"),"Y"]<- NA
+all.f[which(all.f$Date=="2017-06-26" & all.f$Genotype=="1734" | all.f$Date=="2017-06-28" & all.f$Genotype=="1734" | all.f$Date=="2017-06-30" & all.f$Genotype=="1734"),"Y"]<- NA
 #1736 Ipam 14
 all.f[which(all.f$Date=="2017-06-30" & all.f$Genotype=="1736"),"Y"]<- NA
 #1737 Ipam 14
-all.f[which(all.f$Date=="2017-06-30" & all.f$Genotype=="1737"),"Y"]<- NA
+all.f[which(all.f$Date=="2017-06-30" & all.f$Genotype=="1737"),]<- NA
 #1738 Ipam 13+14
-all.f[which(all.f$Date=="2017-06-28" || all.f$Date=="2017-06-30" & all.f$Genotype=="1738"),"Y"]<- NA
+all.f[which(all.f$Date=="2017-06-28" & all.f$Genotype=="1738" | all.f$Date=="2017-06-30" & all.f$Genotype=="1738"),"Y"]<- NA
 #1739 Ipam 13+14
-all.f[which(all.f$Date=="2017-06-28" || all.f$Date=="2017-06-30" & all.f$Genotype=="1739"),"Y"]<- NA
+all.f[which(all.f$Date=="2017-06-28"& all.f$Genotype=="1739" | all.f$Date=="2017-06-30" & all.f$Genotype=="1739"), "Y"]<- NA
 #1747 Ipam 14
 all.f[which(all.f$Date=="2017-06-30" & all.f$Genotype=="1747"),"Y"]<- NA
 #1750 Ipam 14
@@ -139,15 +139,43 @@ all.f[which(all.f$Date=="2017-06-30" & all.f$Genotype=="1752"),"Y"]<- NA
 #1753 Ipam 14
 all.f[which(all.f$Date=="2017-06-30" & all.f$Genotype=="1753"),"Y"]<- NA
 #1755 Ipam 13+14
-all.f[which(all.f$Date=="2017-06-28" || all.f$Date=="2017-06-30" & all.f$Genotype=="1755"),"Y"]<- NA
+all.f[which(all.f$Date=="2017-06-28" & all.f$Genotype=="1755" | all.f$Date=="2017-06-30" & all.f$Genotype=="1755"),"Y"]<- NA
 #1757 Ipam 14
 all.f[which(all.f$Date=="2017-06-30" & all.f$Genotype=="1757"),"Y"]<- NA
 #1758 Ipam 14
 all.f[which(all.f$Date=="2017-06-30" & all.f$Genotype=="1758"),"Y"]<- NA
-#1759 Ipam 14
-all.f[which(all.f$Date=="2017-06-30" & all.f$Genotype=="1759"),"Y"]<- NA
 
+#Remove all 1723G as it died prior to end of experiment
+all.f[which(all.f$FragID=="1723G"),"Y"]<- NA
+#Remove all 1723D as it died prior to end of experiment
+all.f[which(all.f$FragID=="1723D"),"Y"]<- NA
+#Remove 1752J from IPam2 due to low value and healthy looking coral all points~.49
+all.f[which(all.f$FragID=="1752J"&all.f$Date=="2017-05-25"),"Y"]<- NA
+#Remove Ipam 4 Picture 28 due to all low values
+all.f[which(all.f$file=="00028 1736_1727"&all.f$Date=="2017-06-01"),"Y"]<- NA
+#Remove Ipam 5 Picture 13 due to all high values
+all.f[which(all.f$file=="13 1736_1722"&all.f$Date=="2017-06-05"),"Y"]<- NA
+#Remove Ipam 5 Picture 1 Bottom right corner due to low values and hard differentiation from BG
+all.f[which(all.f$AOI=="10" & all.f$file=="1 1758_1745"&all.f$Date=="2017-06-05"),"Y"]<- NA
+all.f[which(all.f$AOI=="9" & all.f$file=="1 1758_1745"&all.f$Date=="2017-06-05"),"Y"]<- NA
+all.f[which(all.f$AOI=="8" & all.f$file=="1 1758_1745"&all.f$Date=="2017-06-05"),"Y"]<- NA
+#Remove Ipam 6 Picture 27 due to all low values
+#all.f[which(all.f$file=="27 1745_1733"&all.f$Date=="2017-06-08"),"Y"]<- NA
+#Remove 1721E from IPam12 due to possibly dead and spike in Fv/Fm
+all.f[which(all.f$FragID=="1721E"&all.f$Date=="2017-06-26"),"Y"]<- NA
+#Remove 1729M from IPam14 due to possibly dead and spike in Fv/Fm
+all.f[which(all.f$FragID=="1729M"&all.f$Date=="2017-06-30"),"Y"]<- NA
+#Remove 1730 from all due to only one fragment
+all.f[which(all.f$Genotype=="1730"),"Y"]<- NA
 
+#Omit Tank 1
+all.right <-all.f
+all.right[which(all.right$Tank=="T1"),"Y"]<-NA
+xyplot(Y ~ Date | Genotype, data=all.right, type=c("p"), ylim=c(0.0, 0.7))
+#Omit Tank2+3
+all.left <-all.f
+all.left[which(all.left$Tank=="T2" | all.left$Tank=="T3"),"Y"]<-NA
+xyplot(Y ~ Date | Genotype, data=all.left, type=c("p"), ylim=c(0.0, 0.7))
 # Save data as .RData
 save(all.f, file="Output/all.f.RData")
 
@@ -157,6 +185,10 @@ save(all.f, file="Output/all.f.RData")
 
 library(lattice)
 xyplot(Y ~ Date | Genotype, data=all.f, type=c("p"), ylim=c(0.0, 0.7))
+boxplot(all.f$Y~all.f$Date)
+
+
+boxplot(Y~Date, data = all.f[which(all.f$Genotype=="1731"),])
 
 boxplot(combine_ipam1$Y, combine_ipam2$Y, combine_ipam3$Y, cor_combine_ipam4$Y, cor_combine_ipam5$Y, combine_ipam6$Y, combine_ipam7$Y, combine_ipam8$Y, combine_ipam9$Y, combine_ipam10$Y, combine_ipam11$Y, combine_ipam12$Y, combine_ipam13$Y, combine_ipam14$Y, names = c("1st IPam", "2nd IPam", "3rd IPam", "4th IPam", "5th IPam", "6th IPam", "7th IPam", "8th IPam", "9th IPam", "10th IPam", "11th IPam", "12th IPam", "13th Ipam", "14th Ipam"), ylab = "Y", ylim = c(0.0, 0.7))
 #To look at numbers by genotype and decline
@@ -171,7 +203,7 @@ View(table(combine_ipam3$Tank))
 View(combine_ipam3)
 #Write figures
 #Write Genotype Plot
-png(filename = "Output/Figures/first14ipamsbygeno.png", width=7, height = 7, units = "in", res = 300)
+png(filename = "Output/Figures/rawdataclean.png", width=7, height = 7, units = "in", res = 300)
 xyplot(Y ~ Date | Genotype, data=all.f, type=c("p"), ylim=c(0.0, 0.7), main = "Ipam 14 by Genotype")
 dev.off()
 #Write Boxplots
